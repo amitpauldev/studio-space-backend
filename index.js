@@ -155,4 +155,8 @@ app.delete("/studios/:id", verifyToken, async (req, res) => {
 	}
 });
 
-export default app;
+app.listen(PORT, () => {
+	console.log(`Server is running at ${PORT}`);
+});
+
+// export default app;

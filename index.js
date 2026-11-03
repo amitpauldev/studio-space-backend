@@ -35,7 +35,7 @@ const verifyToken = async (req, res, next) => {
 	}
 
 	const JWKS = createRemoteJWKSet(
-		new URL(`${process.env.Frontend_URL}/api/auth/jwks`),
+		new URL(`${process.env.FRONTEND_URL}/api/auth/jwks`),
 	);
 
 	try {
@@ -100,7 +100,7 @@ app.get("/studios/:category", async (req, res) => {
 });
 
 // Single studio by id
-app.get("/studios/:id", async (req, res) => {
+app.get("/studios/id/:id", async (req, res) => {
 	try {
 		const studio = await studios.findOne({
 			_id: new ObjectId(req.params.id),
@@ -155,6 +155,10 @@ app.delete("/studios/:id", verifyToken, async (req, res) => {
 	}
 });
 
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+	app.listen(PORT, () => {
+		console.log(`Server is running on port ${PORT}`);
+	});
+}
+
+export default app;

@@ -8,6 +8,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Middleware
+app.use(cors());
+app.use(express.json());
+
 // Connect to MongoDB
 const client = new MongoClient(process.env.MONGODB_URI);
 export async function connectToMongoDB() {
@@ -45,10 +49,6 @@ const verifyToken = async (req, res, next) => {
 		return res.status(500).json({ error: "Internal Server Error" });
 	}
 };
-
-// Middleware
-app.use(cors());
-app.use(express.json());
 
 // Get routes
 app.get("/", async (req, res) => {
@@ -154,11 +154,5 @@ app.delete("/studios/:id", verifyToken, async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error!" });
 	}
 });
-
-if (!process.env.VERCEL) {
-	app.listen(PORT, () => {
-		console.log(`Server is running on port ${PORT}`);
-	});
-}
 
 export default app;

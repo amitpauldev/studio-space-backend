@@ -27,11 +27,11 @@ const studios = db.collection("all_studios");
 const verifyToken = async (req, res, next) => {
 	const authHeader = req.headers.authorization;
 	if (!authHeader) {
-		return res.status(401).json({ msg: "Unauthorized" });
+		return res.status(500).json({ msg: "Unauthorized" });
 	}
 	const token = authHeader.split(" ")[1];
 	if (!token) {
-		return res.status(401).json({ msg: "Unauthorized" });
+		return res.status(500).json({ msg: "Unauthorized" });
 	}
 
 	const JWKS = createRemoteJWKSet(
@@ -138,7 +138,7 @@ app.patch("/studios/:id", verifyToken, async (req, res) => {
 		res.json(result);
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ error: "Internal Server Error" });
+		res.status(500).json({ error: "Internal Server Error!" });
 	}
 });
 

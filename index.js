@@ -22,7 +22,6 @@ export async function connectToMongoDB() {
 const mongodbClient = await connectToMongoDB();
 const db = mongodbClient.db("studio_space");
 const studios = db.collection("all_studios");
-const categories = db.collection("all_categories");
 
 // verify header token for Post, Update and Delete Requests
 const verifyToken = async (req, res, next) => {

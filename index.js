@@ -151,7 +151,7 @@ app.delete("/studios/:id", verifyToken, async (req, res) => {
 		res.json(result);
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ error: "Internal Server Error" });
+		res.status(500).json({ error: "Internal Server Error!" });
 	}
 });
 

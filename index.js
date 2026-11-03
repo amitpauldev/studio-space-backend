@@ -101,7 +101,7 @@ app.get("/studios/:category", async (req, res) => {
 });
 
 // Single studio by id
-app.get("/studios/id/:id", async (req, res) => {
+app.get("/studios/:id", async (req, res) => {
 	try {
 		const studio = await studios.findOne({
 			_id: new ObjectId(req.params.id),
@@ -110,29 +110,6 @@ app.get("/studios/id/:id", async (req, res) => {
 			return res.status(404).json({ error: "Studio not found" });
 		}
 		res.json(studio);
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ error: "Internal Server Error" });
-	}
-});
-
-app.get("/categories", async (req, res) => {
-	try {
-		const categoriesData = await categories.find().toArray();
-		res.json(categoriesData);
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ error: "Internal Server Error" });
-	}
-});
-
-app.get("/categories/:category", async (req, res) => {
-	try {
-		const category = req.params.category;
-		const categoryData = await categories
-			.find({ categorySlug: category })
-			.toArray();
-		res.json(categoryData);
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: "Internal Server Error" });

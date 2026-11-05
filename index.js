@@ -26,6 +26,7 @@ export async function connectToMongoDB() {
 const mongodbClient = await connectToMongoDB();
 const db = mongodbClient.db("studio_space");
 const studios = db.collection("all_studios");
+const bookings = db.collection("user_booking");
 
 // verify header token for Post, Update and Delete Requests
 const verifyToken = async (req, res, next) => {
@@ -115,11 +116,32 @@ app.get("/studios/id/:id", async (req, res) => {
 	}
 });
 
+app.get("/bookings", async (req, res) => {
+	try {
+		const bookingsData = await bookings.find().toArray();
+		res.json(bookingsData);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
 // Post routes
 app.post("/studios", verifyToken, async (req, res) => {
 	try {
 		const newStudio = req.body;
 		const result = await studios.insertOne(newStudio);
+		res.status(201).json(result);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
+app.post("/bookings", verifyToken, async (req, res) => {
+	try {
+		const newBooking = req.body;
+		const result = await bookings.insertOne(newBooking);
 		res.status(201).json(result);
 	} catch (err) {
 		console.error(err);
@@ -159,4 +181,4 @@ app.listen(PORT, () => {
 	console.log(`Server is running at ${PORT}`);
 });
 
-// export default app;
+export default app;

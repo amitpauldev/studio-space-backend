@@ -164,6 +164,20 @@ app.patch("/studios/:id", verifyToken, async (req, res) => {
 	}
 });
 
+app.patch("/bookings/:id", verifyToken, async (req, res) => {
+	try {
+		const { status } = req.body;
+		const result = await studios.updateOne(
+			{ _id: new ObjectId(req.params.id) },
+			{ $set: { status: status } },
+		);
+		res.json(result);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Internal Server Error!" });
+	}
+});
+
 // Delete routes
 app.delete("/studios/:id", verifyToken, async (req, res) => {
 	try {
